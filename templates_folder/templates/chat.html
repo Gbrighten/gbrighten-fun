@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>G.BRIGHTEN FUN PLACE</title>
+    <style>
+        body {
+            background-image: url("/static/images/{{ theme['image'] }}");
+            background-size: cover;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        #chat-box {
+            background: rgba(0,0,0,0.5);
+            padding: 20px;
+            height: 400px;
+            overflow-y: scroll;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script>
+        var socket = io();
+        function sendMessage() {
+            var message = document.getElementById("msg").value;
+            socket.send(message);
+            document.getElementById("msg").value = "";
+        }
+        socket.on("message", function(msg) {
+            var box = document.getElementById("chat-box");
+            box.innerHTML += "<div>" + msg + "</div>";
+            box.scrollTop = box.scrollHeight;
+        });
+    </script>
+</head>
+<body>
+    <h2>Welcome to G.BRIGHTEN FUN PLACE - Theme: {{ theme['name'] }}</h2>
+    <div id="chat-box"></div>
+    <input type="text" id="msg" placeholder="Type your message..." autofocus>
+    <button onclick="sendMessage()">Send</button>
+    <br><br><a href="/logout">Logout</a>
+</body>
+</html>
